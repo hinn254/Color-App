@@ -28,7 +28,12 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="ColorPalette" component={ColorPallete} />
+        <Stack.Screen
+          name="ColorPalette"
+          component={ColorPallete}
+          // changes title of the stack header to the ones available in route params
+          options={({ route }) => ({ title: route.params.paletteName })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
