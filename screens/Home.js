@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, RefreshControl } from 'react-native';
 import PalettePreview from '../components/PalettePreview';
 // const COLORS = [...];
+
+// Refresh works on scrollable components - track it with state to make it dynamic
 
 const SOLARIZED = [
   { colorName: 'Base03', hexCode: '#002b36' },
@@ -45,17 +47,26 @@ const COLOR_PALETTES = [
 
 const Home = ({ navigation }) => {
   const [colorPalettes, setColorPalettes] = useState([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
     console.log('useEffect');
     const fetchData = async () => {
+      setIsRefreshing(true);
       let response = await fetch(
         'https://color-palette-api.kadikraman.now.sh/palettes',
       );
-
+      //   setTimeout(async () => {
+      //     if (response.ok) {
+      //       let resData = await response.json();
+      //       setColorPalettes(resData);
+      //       setIsRefreshing(false);
+      //     }
+      //   }, 2000);
       if (response.ok) {
         let resData = await response.json();
         setColorPalettes(resData);
+        setIsRefreshing(false);
       }
     };
     fetchData();
@@ -63,6 +74,7 @@ const Home = ({ navigation }) => {
   console.log(colorPalettes);
 
   return (
+    //   Flatlist have refresh and onrefresh properties
     <FlatList
       style={styles.list}
       //   this is the hard coded color pallete
@@ -79,6 +91,11 @@ const Home = ({ navigation }) => {
           colorPalette={item}
         />
       )}
+      //   Flatlist refresh props
+      refreshing={isRefreshing}
+      onRefresh={() => console.log('I am erfrsed')}
+      // This is for refreshing
+      //   refreshControl={<RefreshControl refreshing={true} onRefresh={() => {}} />}
     />
   );
 };
