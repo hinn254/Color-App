@@ -23,27 +23,16 @@ const COLORS = [
 
 const ColorPallete = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <FlatList
-        data={COLORS}
-        style={{ backgroundColor: 'white' }}
-        // if your data already has a key as a string -- key:"2" u dont need keyExtractor
-        keyExtractor={(item) => item.hexCode}
-        renderItem={({ item }) => (
-          <ColorBox hexCode={item.hexCode} colorName={item.colorName} />
-        )}
-        ListHeaderComponent={<Text style={styles.intro}>Solarized colors</Text>}
-      />
-      {/* <View>
-    <Text style={styles.intro}>
-      Here are some boxes of different colors
-    </Text>
-    <ColorBox hexCode="#2aa198" colorName="Cyan" />
-    <ColorBox hexCode="#268bd2" colorName="Blue" />
-    <ColorBox hexCode="#d33682" colorName="Magenta" />
-    <ColorBox hexCode="#cb4b16" colorName="Orange" />
-  </View> */}
-    </SafeAreaView>
+    <FlatList
+      data={COLORS}
+      style={{ backgroundColor: 'white' }}
+      // if your data already has a key as a string -- key:"2" u dont need keyExtractor
+      keyExtractor={(item) => item.hexCode}
+      renderItem={({ item }) => (
+        <ColorBox hexCode={item.hexCode} colorName={item.colorName} />
+      )}
+      ListHeaderComponent={<Text style={styles.intro}>Solarized colors</Text>}
+    />
   );
 };
 
