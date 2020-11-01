@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import PalettePreview from '../components/PalettePreview';
 // const COLORS = [...];
@@ -44,10 +44,32 @@ const COLOR_PALETTES = [
 ];
 
 const Home = ({ navigation }) => {
+  const [colorPalettes, setColorPalettes] = useState([]);
+
+  useEffect(() => {
+    console.log('useEffect');
+    const fetchData = async () => {
+      let response = await fetch(
+        'https://color-palette-api.kadikraman.now.sh/palettes',
+      );
+
+      if (response.ok) {
+        let resData = await response.json();
+        setColorPalettes(resData);
+      }
+    };
+    fetchData();
+  }, []);
+  console.log(colorPalettes);
+
   return (
     <FlatList
       style={styles.list}
-      data={COLOR_PALETTES}
+      //   this is the hard coded color pallete
+      //   data={COLOR_PALETTES}
+      //   this is the color pallete from api
+
+      data={colorPalettes}
       keyExtractor={(item) => item.paletteName}
       renderItem={({ item }) => (
         <PalettePreview
@@ -60,21 +82,6 @@ const Home = ({ navigation }) => {
     />
   );
 };
-
-{
-  /* <View>
-<TouchableOpacity
-  onPress={() => {
-    navigation.navigate('ColorPalette', {
-      paletteName: 'Solarized',
-      colors: SOLARIZED,
-    });
-  }}
->
-  <Text>Solarized</Text>
-</TouchableOpacity>
-</View> */
-}
 
 const styles = StyleSheet.create({
   list: {
