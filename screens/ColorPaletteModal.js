@@ -163,20 +163,46 @@ const COLORS = [
 // we have access to navigation because our modal is the top level component
 const ColorPaletteModal = ({ navigation }) => {
   const [name, setName] = useState('');
+  const [selectedColor, setSelectedColor] = useState([]);
 
+  console.log('--------start------');
+
+  console.log(name);
+  console.log('--------------');
+  console.log(selectedColor);
+  console.log('-------end-------');
+
+  //   when submited
   const handleSubmit = () => {
     if (!name) {
       Alert.alert('Please enter a palette name');
+    } else if (selectedColor.length < 3) {
+      Alert.alert('Please add at least 3 color');
     } else {
       const newColorPalette = {
         paletteName: name,
-        colors: [],
+        colors: selectedColor,
       };
 
       // takes us back -- closes the modal
       //   navigation.goBack();
       //   we cant use goback because we want to show what the user has inputted
       navigation.navigate('Home', { newColorPalette });
+    }
+  };
+
+  //   when switch value change
+  const handleValueChange = (value, color) => {
+    console.log('inside value chande');
+    console.log(value);
+    console.log(color);
+
+    if (value === true) {
+      setSelectedColor([...selectedColor, color]);
+    } else {
+      setSelectedColor((selectedColor) =>
+        selectedColor.filter((c) => color.colorName !== c.colorName),
+      );
     }
   };
 
@@ -196,7 +222,17 @@ const ColorPaletteModal = ({ navigation }) => {
           // {/* on value because we want to know if a value changes */}
           <View style={styles.color}>
             <Text>{item.colorName}</Text>
-            <Switch value={true} onValueChange={(f) => f} />
+            {/* wwe force the value into being a bolean using !!  */}
+            <Switch
+              value={
+                !!selectedColor.find(
+                  (color) => color.colorName === item.colorName,
+                )
+              }
+              onValueChange={(selected) => {
+                handleValueChange(selected, item);
+              }}
+            />
           </View>
         )}
       />

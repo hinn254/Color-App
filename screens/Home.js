@@ -92,7 +92,7 @@ const Home = ({ navigation, route }) => {
     };
     fetchData();
   }, []);
-  console.log(colorPalettes);
+  // console.log(colorPalettes);
 
   return (
     //   Flatlist have refresh and onrefresh properties
