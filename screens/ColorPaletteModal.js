@@ -6,6 +6,7 @@ import {
   TextInput,
   StyleSheet,
   Alert,
+  Switch,
 } from 'react-native';
 
 // we have access to navigation because our modal is the top level component
@@ -37,6 +38,11 @@ const ColorPaletteModal = ({ navigation }) => {
         value={name}
         onChangeText={(value) => setName(value)}
       />
+      {/* on value because we want to know if a value changes */}
+      <View style={styles.color}>
+        <Text>Color Name</Text>
+        <Switch value={true} onValueChange={(f) => f} />
+      </View>
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
@@ -68,7 +74,17 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
-  marginBottom: 10,
+  name: {
+    marginBottom: 10,
+  },
+  color: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    borderBottomColor: 'grey',
+    borderBottomWidth: 1,
+  },
 });
 
 export default ColorPaletteModal;
