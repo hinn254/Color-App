@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from './screens/Home';
 import ColorPallete from './screens/ColorPallete';
+import ColorPaletteModal from './screens/ColorPaletteModal';
 // styles done by inline styles
 // to create styles we use Stylesheet
 // styles are unitless
@@ -20,21 +21,41 @@ import ColorPallete from './screens/ColorPallete';
 
 // colors
 
-const Stack = createStackNavigator();
+// rename to root stack --- to add modal
+// const Stack = createStackNavigator();
+
+const RootStack = createStackNavigator();
+const MainStack = createStackNavigator();
+
+const MainStackScreen = () => {
+  return (
+    <MainStack.Navigator>
+      <MainStack.Screen name="Home" component={Home} />
+      <MainStack.Screen
+        name="ColorPalette"
+        component={ColorPallete}
+        options={({ route }) => ({ title: route.params.paletteName })}
+      />
+    </MainStack.Navigator>
+  );
+};
 
 const App = () => {
   return (
     // Wrap all app with navigation container
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen
-          name="ColorPalette"
-          component={ColorPallete}
-          // changes title of the stack header to the ones available in route params
-          options={({ route }) => ({ title: route.params.paletteName })}
+      <RootStack.Navigator mode="modal">
+        <RootStack.Screen
+          name="Main"
+          component={MainStackScreen}
+          options={{ headerShown: false }}
         />
-      </Stack.Navigator>
+        <RootStack.Screen
+          name="ColorPaletteModal"
+          component={ColorPaletteModal}
+          options={{ headerShown: false }}
+        />
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 };
