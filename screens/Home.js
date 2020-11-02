@@ -51,10 +51,25 @@ const COLOR_PALETTES = [
   { paletteName: 'Rainbow', colors: RAINBOW },
 ];
 
-const Home = ({ navigation }) => {
+const Home = ({ navigation, route }) => {
   const [colorPalettes, setColorPalettes] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  // new color
+  // when it loads first its empty so u will make it undefined
+  const newColorPalette = route.params
+    ? route.params.newColorPalette
+    : undefined;
+  // const { newColorPalette } = route.params;
+
+  // runs if new color has been added , takes the current pallete list and add it to the beginning
+  useEffect(() => {
+    if (newColorPalette) {
+      setColorPalettes([newColorPalette, ...colorPalettes]);
+    }
+  }, [newColorPalette]);
+
+  console.log(newColorPalette);
   useEffect(() => {
     console.log('useEffect');
     const fetchData = async () => {
@@ -108,7 +123,7 @@ const Home = ({ navigation }) => {
         <TouchableOpacity
           onPress={() => navigation.navigate('ColorPaletteModal')}
         >
-          <Text>Launch Modal</Text>
+          <Text style={styles.buttonText}>Add a color scheme</Text>
         </TouchableOpacity>
       }
     />
@@ -119,6 +134,12 @@ const styles = StyleSheet.create({
   list: {
     padding: 10,
     backgroundColor: 'white',
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'teal',
+    marginBottom: 10,
   },
 });
 
